@@ -3,20 +3,20 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const [book, setBook] = useState([]);
+  const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchAllBook = async (page) => {
     try {
       const res = await axios.get(`http://localhost:8800/books?page=${page}`);
-      setBook(res.data.data);
+      setBooks(res.data.data);
       setTotalPages(res.data.totalPages);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
-  console.log(book);
 
   useEffect(() => {
     fetchAllBook(currentPage);
@@ -36,9 +36,10 @@ const Home = () => {
 
   return (
     <div className="app">
-    <h1 className="home-title">Sản Phẩm mới</h1>
+      <h1 className="home-title">Sản Phẩm mới</h1>
+      <hr />
       <div className="books">
-        {book.map((book) => (
+        {books.map((book) => (
           <div className="book" key={book.id}>
             <div className="home-book">
               {book.image && <img src={book.image} alt="" />}

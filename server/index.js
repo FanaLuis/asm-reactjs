@@ -2,6 +2,7 @@ import express from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cache from "memory-cache";
 
 const app = express();
 app.use(cors());
@@ -110,8 +111,16 @@ app.put("/books/:id", (req, res) => {
 });
 
 //trang chi tiết
+// Trang chi tiết
 app.get("/books/:id", (req, res) => {
   const bookId = req.params.id;
+
+  // Kiểm tra xem dữ liệu đã được lưu trong cache chưa
+  const cachedData = cache.get(bookId);
+  if (cachedData) {
+    return res.json(cachedData);
+  }
+
   const q = "SELECT * FROM book WHERE id = ?";
   db.query(q, [bookId], (err, data) => {
     if (err) {
@@ -123,9 +132,13 @@ app.get("/books/:id", (req, res) => {
       return res.status(404).json({ error: "Book not found." });
     }
 
+    // Lưu kết quả truy vấn vào cache với thời gian sống 1 phút (60 giây)
+    cache.put(bookId, data[0], 60000);
+    console.log("Data from MySQL");
     return res.json(data[0]);
   });
 });
+
 
 app.listen(8800, () => {
   console.log("Server started on port 8800");

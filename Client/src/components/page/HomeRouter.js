@@ -3,9 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./Navbar";
 import Home from "./Home";
 import Product from "./Product";
-import Services from "./Services";
-import Contact from "./Contact";
 import ProductDetail from "./ProductDetail";
+import Register from "./Register";
+import Login from "./login";
 
 const HomeRouter = () => {
   return (
@@ -16,8 +16,8 @@ const HomeRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productDetail/:productId" element={<ProductDetail />} /> {/* Add the route for product detail */}
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );

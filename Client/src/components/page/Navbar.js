@@ -16,11 +16,11 @@ const Navbar = () => {
           <Link to="/product">
             <li>Product</li>
           </Link>
-          <Link to="/services">
-            <li>Services</li>
+          <Link to="/login">
+            <li>Đăng Nhập</li>
           </Link>
-          <Link to="/contact">
-            <li>Contact</li>
+          <Link to="/register">
+            <li>Đăng kí</li>
           </Link>
         </ul>
         <button className="mobile-menu-icon">

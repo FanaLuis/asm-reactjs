@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Services = () => {
+const Login = () => {
     return (
         <div className='hero'>
-            <h1>trang services</h1>
+            <h1>trang Login</h1>
         </div>
     );
 };
 
-export default Services;
+export default Login;
