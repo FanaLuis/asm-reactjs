@@ -102,6 +102,8 @@ textarea{
   font-weight: bold;
   cursor: pointer;
   width: 250px;
+  margin-left: 200px;
+  margin-top: 50px;
 }
 .price {
   color: red;

@@ -65,14 +65,12 @@ app.post("/books", (req, res) => {
     req.body.decs,
     req.body.price,
     req.body.image,
-    
   ];
   db.query(q, [values], (err, data) => {
     if (err) return res.json(err);
     return res.json("book hass been added");
   });
 });
-
 
 app.delete("/books/:id", (req, res) => {
   const bookId = req.params.id;
@@ -84,11 +82,11 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-
 app.put("/books/:id", (req, res) => {
   const bookId = req.params.id;
-  const q = "UPDATE book SET title = ?, decs = ?, price = ?, image = ? WHERE id = ?";
-  
+  const q =
+    "UPDATE book SET title = ?, decs = ?, price = ?, image = ? WHERE id = ?";
+
   const values = [
     req.body.title,
     req.body.decs,
@@ -118,6 +116,7 @@ app.get("/books/:id", (req, res) => {
   // Kiểm tra xem dữ liệu đã được lưu trong cache chưa
   const cachedData = cache.get(bookId);
   if (cachedData) {
+    console.log("Data from ccc");
     return res.json(cachedData);
   }
 
@@ -138,7 +137,6 @@ app.get("/books/:id", (req, res) => {
     return res.json(data[0]);
   });
 });
-
 
 app.listen(8800, () => {
   console.log("Server started on port 8800");

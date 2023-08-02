@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 const Product = () => {
   const [book, setBook] = useState([]);
@@ -52,11 +53,11 @@ const Product = () => {
       </div>
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
+        <AiOutlineArrowLeft />
         </button>
         <p>{currentPage}</p>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
+        <AiOutlineArrowRight />
         </button>
       </div>
     </div>

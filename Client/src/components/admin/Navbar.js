@@ -8,7 +8,9 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container">
-        <h3 className="logo">Logo</h3>
+      <Link to="/admin/dashboard">
+        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/12/Icon-Truong-Dai-Hoc-Y-Duoc-Buon-Ma-Thuot-BMTU.png" alt=""  Style="width: 50px;margin-left: 30px;margin-top: 8px;"/>
+      </Link>
         <ul className="nav-Links">
           <Link to="/admin/dashboard">
             <li>Dashboard</li>
