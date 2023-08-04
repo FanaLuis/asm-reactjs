@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -9,12 +10,12 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  console.log(books);
-
   useEffect(() => {
     const fetchBooksByPage = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/books?page=${currentPage}`);
+        const res = await axios.get(
+          `http://localhost:8800/books?page=${currentPage}`
+        );
         setBooks(res.data.data);
         setTotalPages(res.data.totalPages);
       } catch (err) {
@@ -38,8 +39,10 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     // Xác nhận trước khi xóa
-    const shouldDelete = window.confirm("Bạn có chắc chắn muốn xóa cuốn sách này?");
-  
+    const shouldDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa cuốn sách này?"
+    );
+
     if (shouldDelete) {
       try {
         await axios.delete(`http://localhost:8800/books/${id}`);
@@ -52,42 +55,64 @@ const Dashboard = () => {
       // Bạn có thể thực hiện các hành động khác ở đây nếu cần thiết
     }
   };
-  
 
   return (
     <div className="app">
-      <div>
-        {/* <h1>Book Shop</h1> */}
-        <div>
-          <button className="formAdd">
-            <Link to="/admin/add">Thêm Sách</Link>
-          </button>
-        </div>
-        <div className="books">
-          {books.map((book) => (
-            <div className="book" key={book.id}>
-              {book.image && <img src={book.image} alt="" />}
-              <h3>{book.title}</h3>
-              {/* <h3>{book.price}</h3> */}
-              <button className="delete" onClick={() => handleDelete(book.id)}>
-                Delete
-              </button>
-              <button className="update">
-                <Link to={`/admin/update/${book.id}`}>Update</Link>
-              </button>
-            </div>
+      <table className="table mt-5">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên Sản Phẩm</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {books.map((book, index) => (
+            <tr key={book.id}>
+              <th scope="row">{book.id}</th>
+              <td>{book.title}</td>
+              <td>{book.price}</td>
+              <td>
+                {
+                  new DOMParser().parseFromString(book.decs, "text/html")
+                    .documentElement.textContent
+                }
+              </td>
+
+              <td>
+                <button
+                  className="delete"
+                  onClick={() => handleDelete(book.id)}
+                >
+                  Delete
+                </button>
+              </td>
+              <td>
+                <button className="update">
+                  <Link to={`/admin/update/${book.id}`}>edit</Link>
+                </button>
+              </td>
+            </tr>
           ))}
-        </div>
-        <div className="pagination">
-          <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          <AiOutlineArrowLeft />
-          </button>
-          <p>{currentPage}</p>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          <AiOutlineArrowRight />
-          </button>
-        </div>
-        {error && <p>{error}</p>}
+        </tbody>
+      </table>
+      <div className="pagination mt-3">
+        <button
+          className="btn btn-primary me-2"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          <AiOutlineArrowLeft /> Previous
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next <AiOutlineArrowRight />
+        </button>
       </div>
     </div>
   );

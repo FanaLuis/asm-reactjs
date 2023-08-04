@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 const Home = () => {
-  const [books, setBooks] = useState([]);
+  const [book, setBook] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchAllBook = async (page) => {
     try {
       const res = await axios.get(`http://localhost:8800/books?page=${page}`);
-      setBooks(res.data.data);
+      setBook(res.data.data);
       setTotalPages(res.data.totalPages);
       console.log(res.data);
     } catch (err) {
@@ -40,19 +40,19 @@ const Home = () => {
       <h1 className="home-title">Sản Phẩm mới</h1>
       <hr />
       <div className="books">
-        {books.map((book) => (
-          <div className="book" key={book.id}>
-            <div className="home-book">
-              {book.image && <img src={book.image} alt="" />}
-            </div>
-            <Link to={`/productDetail/${book.id}`} className="book-title">
-              {book.title}
+          {book.map((book) => (
+            <Link to={`/productDetail/${book.id}`} className="book" key={book.id}>
+              <div className="home-book">
+                {book.image && <img src={book.image} alt="" />}
+              </div>
+              <div className="book-title">
+                {book.title}
+              </div>
+              <p className="price">{book.price}</p>
+              {/* <p>{book.decs}</p> */}
             </Link>
-            <p className="price">{book.price}</p>
-            {/* <p>{book.decs}</p> */}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
         <AiOutlineArrowLeft />

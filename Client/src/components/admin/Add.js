@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import RichTextEditor from "../CKeditorText";
+
 
 const Add = () => {
   const [book, setBook] = useState({
@@ -34,14 +36,20 @@ const Add = () => {
       return;
     }
     if (!book.image) {
-      setError({ field: "image", message: "Vui lòng nhập đường dẫn ảnh minh họa sản phẩm." });
+      setError({
+        field: "image",
+        message: "Vui lòng nhập đường dẫn ảnh minh họa sản phẩm.",
+      });
       return;
     }
 
     // Validate the price field as a positive number
     const priceValue = parseFloat(book.price);
     if (isNaN(priceValue) || priceValue <= 0) {
-      setError({ field: "price", message: "Vui lòng nhập giá sản phẩm là một số dương." });
+      setError({
+        field: "price",
+        message: "Vui lòng nhập giá sản phẩm là một số dương.",
+      });
       return;
     }
 
@@ -50,58 +58,75 @@ const Add = () => {
     const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/i;
 
     if (!imagePattern.test(book.image) && !urlPattern.test(book.image)) {
-      setError({ field: "image", message: "Vui lòng nhập đúng định dạng ảnh hoặc URL hợp lệ." });
+      setError({
+        field: "image",
+        message: "Vui lòng nhập đúng định dạng ảnh hoặc URL hợp lệ.",
+      });
       return;
     }
 
     try {
       await axios.post("http://localhost:8800/books", book);
-      navigate("/admin/dashboard");
+      navigate("/admin");
     } catch (err) {
-      setError({ field: "form", message: "Lỗi khi thêm sản phẩm. Vui lòng thử lại sau." });
+      setError({
+        field: "form",
+        message: "Lỗi khi thêm sản phẩm. Vui lòng thử lại sau.",
+      });
     }
   };
 
   return (
-    <div className="form">
-      <h1>Thêm sản phẩm</h1>
-      <input
-        type="text"
-        name="title"
-        onChange={handleChange}
-        placeholder="Tiêu đề"
-        value={book.title}
-      />
-      {error && error.field === "title" && <p className="error-message">{error.message}</p>}
+    <>
+      <form className="form">
+        <h1>Thêm sản phẩm</h1>
+        <input
+          type="text"
+          name="title"
+          onChange={handleChange}
+          placeholder="Tiêu đề"
+          value={book.title}
+          style={{ whiteSpace: "nowrap" }}
+        />
+        {error && error.field === "title" && (
+          <p className="error-message">{error.message}</p>
+        )}
 
-      <textarea
-        name="decs"
-        onChange={handleChange}
-        placeholder="Mô tả"
-        value={book.decs}
-      />
-      {error && error.field === "decs" && <p className="error-message">{error.message}</p>}
+        <RichTextEditor
+          value={book.decs}
+          onChange={(data) => setBook((prev) => ({ ...prev, decs: data }))}
+        />
+        {error && error.field === "decs" && (
+          <p className="error-message">{error.message}</p>
+        )}
 
-      <input
-        type="text"
-        name="price"
-        onChange={handleChange}
-        placeholder="Giá"
-        value={book.price}
-      />
-      {error && error.field === "price" && <p className="error-message">{error.message}</p>}
+        <input
+          type="text"
+          name="price"
+          onChange={handleChange}
+          placeholder="Giá"
+          value={book.price}
+        />
+        {error && error.field === "price" && (
+          <p className="error-message">{error.message}</p>
+        )}
 
-      <input
-        type="text"
-        name="image"
-        onChange={handleChange}
-        placeholder="Ảnh minh họa"
-        value={book.image}
-      />
-      {error && error.field === "image" && <p className="error-message">{error.message}</p>}
+        <input
+          type="text"
+          name="image"
+          onChange={handleChange}
+          placeholder="Ảnh minh họa"
+          value={book.image}
+        />
+        {error && error.field === "image" && (
+          <p className="error-message">{error.message}</p>
+        )}
 
-      <button className="formbutton" onClick={handleClick}>Thêm</button>
-    </div>
+        <button className="formbutton" onClick={handleClick}>
+          Thêm
+        </button>
+      </form>
+    </>
   );
 };
 

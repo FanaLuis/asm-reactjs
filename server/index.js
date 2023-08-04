@@ -38,7 +38,7 @@ app.get("/books", (req, res) => {
   const perPage = 3;
   const offset = (parseInt(page) - 1) * perPage;
 
-  const q = "SELECT * FROM book LIMIT ? OFFSET ?";
+  const q = "SELECT * FROM book ORDER BY currentstamp DESC LIMIT ? OFFSET ?";
   db.query(q, [perPage, offset], (err, data) => {
     if (err) return res.json(err);
 

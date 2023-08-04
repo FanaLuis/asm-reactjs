@@ -1,6 +1,10 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+import DOMPurify from "dompurify";
 
 const Update = () => {
   const [book, setBook] = useState({
@@ -9,6 +13,10 @@ const Update = () => {
     price: "",
     image: "",
   });
+  // Custom function to remove <p> tags from the editor data
+  const removePTags = (data) => {
+    return data.replace(/<p>(.*?)<\/p>/gi);
+  };
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setError] = useState({});
 
@@ -20,8 +28,12 @@ const Update = () => {
     // Fetch the existing book data and populate the form
     const fetchBookData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8800/books/${bookId}`);
-        setBook(response.data);
+        const response = await axios.get(
+          `http://localhost:8800/books/${bookId}`
+        );
+        // Sanitize decs to remove any unsafe HTML tags
+        const sanitizedDecs = DOMPurify.sanitize(response.data.decs);
+        setBook((prev) => ({ ...prev, ...response.data, decs: sanitizedDecs }));
       } catch (err) {
         setError("Failed to fetch book data. Please try again later.");
       }
@@ -70,7 +82,7 @@ const Update = () => {
     try {
       await axios.put(`http://localhost:8800/books/${bookId}`, book);
       setIsLoading(false);
-      navigate("/admin/dashboard");
+      navigate("/admin");
     } catch (err) {
       setIsLoading(false);
       setError("Failed to update the book. Please try again later.");
@@ -89,13 +101,15 @@ const Update = () => {
       />
       {errors.title && <p className="error-message">{errors.title}</p>}
 
-      <input
-        type="text"
-        name="decs"
-        onChange={handleChange}
-        placeholder="Mô tả"
-        value={book.decs}
+      <CKEditor
+        editor={ClassicEditor}
+        data={book.decs}
+        onChange={(event, editor) => {
+          const decsData = editor.getData();
+          setBook((prev) => ({ ...prev, decs: decsData }));
+        }}
       />
+
       {errors.decs && <p className="error-message">{errors.decs}</p>}
 
       <input

@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container">
       <Link to="/">
-        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/12/Icon-Truong-Dai-Hoc-Y-Duoc-Buon-Ma-Thuot-BMTU.png" alt=""  Style="width: 50px;margin-left: 30px;margin-top: 8px;"/>
+        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/12/Icon-Truong-Dai-Hoc-Y-Duoc-Buon-Ma-Thuot-BMTU.png" alt="logo.png"  Style="width: 50px;"/>
       </Link>
         <ul className="nav-Links">
           <Link to="/">

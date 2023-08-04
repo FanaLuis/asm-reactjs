@@ -12,7 +12,7 @@ const AdminRouter = () => {
 
       <Routes>
         {/* Route cho trang Dashboard của admin */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         {/* Route cho trang Add của admin */}
         <Route path="/add" element={<Add />} />
         {/* Route cho trang Update của admin */}
