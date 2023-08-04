@@ -4,8 +4,8 @@ import Navbar from "./Navbar";
 import Home from "./Home";
 import Product from "./Product";
 import ProductDetail from "./ProductDetail";
-import Register from "./Register";
-import Login from "./login";
+import Login from "./auth/user/login";
+import Register from "./auth/user/Register";
 
 const HomeRouter = () => {
   return (

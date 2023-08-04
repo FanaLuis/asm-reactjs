@@ -37,8 +37,6 @@ const Home = () => {
 
   return (
     <div className="app">
-      <h1 className="home-title">Sản Phẩm mới</h1>
-      <hr />
       <div className="books">
           {book.map((book) => (
             <Link to={`/productDetail/${book.id}`} className="book" key={book.id}>
